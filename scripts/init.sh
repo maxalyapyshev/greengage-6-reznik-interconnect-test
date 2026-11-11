@@ -35,6 +35,7 @@ gpconfig -c shared_buffers -v 32MB -m 64MB
 gpconfig -c max_connections -v 30 -m 20
 gpconfig -c gp_vmem_protect_limit -v 384
 gpconfig -c statement_mem -v 32MB
-gpconfig -c gp_interconnect_type -v tcp
+gpconfig -c gp_interconnect_type -v udpifc
+gpconfig -c gp_max_packet_size -v 1400
 gpstop -a -r
 bash /opt/lab/scripts/check.sh

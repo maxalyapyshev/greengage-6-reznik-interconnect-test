@@ -12,6 +12,8 @@ for name in ['interconnect-universal-load.sh', 'interconnect-universal-setup.sql
     old = raw.decode('utf-8')
     new = old.replace(chr(160), ' ')
     if name.endswith('.sh'):
+        # Default transport for the generated workload
+        new = new.replace('transport=${1:-tcp}', 'transport=${1:-udpifc}')
         for phrase in ['Параллельная нагрузка', 'Запускать на coordinator', 'Параметры:', 'Проверяем, что']:
             new = re.sub(r'(?m)^(' + re.escape(phrase) + r'.*)$', r'# \1', new)
         new = new.replace('psql -X -qAt -v ON_ERROR_STOP=1 -d adb\n',
