@@ -1,6 +1,6 @@
 # Greengage-6-Reznik-Interconnect-Test
 
-Локальный кластер Greengage 6 в Docker для небольшого UDPIFC-теста широких строк Interconnect по сценариям Резника.
+Локальный кластер Greengage 6 в Docker для небольшого TCP и UDPIFC-теста широких строк Interconnect по сценариям Резника.
 
 ## Версия и топология
 
