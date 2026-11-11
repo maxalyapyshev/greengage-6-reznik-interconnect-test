@@ -15,6 +15,6 @@ chown -R gpadmin:gpadmin /home/gpadmin/.ssh /data
 chmod 600 /home/gpadmin/.ssh/config
 ssh-keygen -A
 # All four containers have NET_ADMIN. Limit each egress interface; no speed promise.
-tc qdisc replace dev eth0 root tbf rate "${IC_RATE:-100gbit}" burst 16mb latency 50ms
+tc qdisc replace dev eth0 root tbf rate "${IC_RATE:-200gbit}" burst 16mb latency 50ms
 tc -s qdisc show dev eth0
 exec /usr/sbin/sshd -D -e

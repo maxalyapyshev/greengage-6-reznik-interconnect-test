@@ -36,7 +36,7 @@ gpconfig -c max_connections -v 30 -m 20
 gpconfig -c gp_vmem_protect_limit -v 384
 gpconfig -c statement_mem -v 32MB
 gpconfig -c gp_interconnect_type -v udpifc
-gpconfig -c gp_max_packet_size -v 1400
+gpconfig -c gp_max_packet_size -v 8192
 # Passwordless gpadmin access for the local lab only.
 for host in master standby; do
   ssh "$host" 'bash -s' <<'HBA'

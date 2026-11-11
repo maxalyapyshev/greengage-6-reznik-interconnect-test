@@ -5,7 +5,7 @@ x-node: &node
   cap_add: [NET_ADMIN]
   shm_size: 256m
   environment:
-    IC_RATE: ${IC_RATE:-100gbit}
+    IC_RATE: ${IC_RATE:-200gbit}
   sysctls:
     kernel.sem: "500 1024000 200 4096"
   ulimits:
@@ -84,7 +84,7 @@ networks:
   ic:
     driver: bridge
     driver_opts:
-      com.docker.network.driver.mtu: "1500"
+      com.docker.network.driver.mtu: "9000"
     ipam:
       config:
         - subnet: 172.29.86.0/24
