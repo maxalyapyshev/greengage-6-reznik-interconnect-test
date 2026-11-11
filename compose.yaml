@@ -1,0 +1,93 @@
+x-node: &node
+  image: ${GG_IMAGE:-gg6-reznik:6.30.1}
+  platform: linux/amd64
+  init: true
+  cap_add: [NET_ADMIN]
+  shm_size: 256m
+  environment:
+    IC_RATE: ${IC_RATE:-100gbit}
+  sysctls:
+    kernel.sem: "500 1024000 200 4096"
+  ulimits:
+    nofile: {soft: 65536, hard: 65536}
+    nproc: 65536
+  volumes:
+    - ./.secrets:/run/lab-keys:ro
+    - ./original:/opt/lab/original:ro
+    - ./work:/opt/lab/work:ro
+    - ./results:/opt/lab/results
+  healthcheck:
+    test: ["CMD-SHELL", "pgrep -x sshd >/dev/null && test -f /home/gpadmin/.ssh/authorized_keys"]
+    interval: 3s
+    timeout: 2s
+    retries: 30
+services:
+  master:
+    <<: *node
+    hostname: master
+    mem_limit: ${MASTER_MEMORY:-1g}
+    cpus: "${MASTER_CPUS:-1}"
+    networks:
+      ic:
+        ipv4_address: 172.29.86.10
+    volumes:
+      - ./.secrets:/run/lab-keys:ro
+      - ./original:/opt/lab/original:ro
+      - ./work:/opt/lab/work:ro
+      - ./results:/opt/lab/results
+      - master-data:/data
+  standby:
+    <<: *node
+    hostname: standby
+    mem_limit: ${STANDBY_MEMORY:-768m}
+    cpus: "${MASTER_CPUS:-1}"
+    networks:
+      ic:
+        ipv4_address: 172.29.86.11
+    volumes:
+      - ./.secrets:/run/lab-keys:ro
+      - ./original:/opt/lab/original:ro
+      - ./work:/opt/lab/work:ro
+      - ./results:/opt/lab/results
+      - standby-data:/data
+  sdw1:
+    <<: *node
+    hostname: sdw1
+    mem_limit: ${SEGMENT_MEMORY:-2g}
+    cpus: "${SEGMENT_CPUS:-1}"
+    networks:
+      ic:
+        ipv4_address: 172.29.86.21
+    volumes:
+      - ./.secrets:/run/lab-keys:ro
+      - ./original:/opt/lab/original:ro
+      - ./work:/opt/lab/work:ro
+      - ./results:/opt/lab/results
+      - sdw1-data:/data
+  sdw2:
+    <<: *node
+    hostname: sdw2
+    mem_limit: ${SEGMENT_MEMORY:-2g}
+    cpus: "${SEGMENT_CPUS:-1}"
+    networks:
+      ic:
+        ipv4_address: 172.29.86.22
+    volumes:
+      - ./.secrets:/run/lab-keys:ro
+      - ./original:/opt/lab/original:ro
+      - ./work:/opt/lab/work:ro
+      - ./results:/opt/lab/results
+      - sdw2-data:/data
+networks:
+  ic:
+    driver: bridge
+    driver_opts:
+      com.docker.network.driver.mtu: "1500"
+    ipam:
+      config:
+        - subnet: 172.29.86.0/24
+volumes:
+  master-data:
+  standby-data:
+  sdw1-data:
+  sdw2-data:
