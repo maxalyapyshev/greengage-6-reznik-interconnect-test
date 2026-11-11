@@ -33,7 +33,7 @@ gpinitsystem -a -c /tmp/gpinitsystem.conf -h /tmp/segment-hosts -s standby
 # Low-memory lab settings; preserve statement_mem=128MB in supplied workload.
 gpconfig -c shared_buffers -v 32MB -m 64MB
 gpconfig -c max_connections -v 30 -m 20
-gpconfig -c gp_vmem_protect_limit -v 256
+gpconfig -c gp_vmem_protect_limit -v 384
 gpconfig -c statement_mem -v 32MB
 gpconfig -c gp_interconnect_type -v tcp
 gpstop -a -r
