@@ -6,3 +6,7 @@ results/*
 work/*
 !work/.gitkeep
 __pycache__/
+
+# Local files
+*.bak
+.vscode/
