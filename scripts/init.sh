@@ -37,5 +37,16 @@ gpconfig -c gp_vmem_protect_limit -v 384
 gpconfig -c statement_mem -v 32MB
 gpconfig -c gp_interconnect_type -v udpifc
 gpconfig -c gp_max_packet_size -v 1400
+# Passwordless gpadmin access for the local lab only.
+for host in master standby; do
+  ssh "$host" 'bash -s' <<'HBA'
+set -euo pipefail
+hba=/data/master/gg-1/pg_hba.conf
+for rule in   "host all gpadmin 0.0.0.0/0 trust"   "host all gpadmin ::/0 trust"
+do
+  grep -qxF "$rule" "$hba" || printf '\n%s\n' "$rule" >> "$hba"
+done
+HBA
+done
 gpstop -a -r
 bash /opt/lab/scripts/check.sh

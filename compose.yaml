@@ -25,6 +25,8 @@ services:
   master:
     <<: *node
     hostname: master
+    ports:
+      - "127.0.0.1:15432:5432"
     mem_limit: ${MASTER_MEMORY:-1g}
     cpus: "${MASTER_CPUS:-1}"
     networks:
